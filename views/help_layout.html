@@ -1,0 +1,15 @@
+{{extend 'layout.html'}}
+
+	<div class="navbar navbar-inverse navbar-fixed-bottom container"><!-- Navigation Bar -->
+		<div class="navbar-inner">
+			<div class="container">
+				<ul class="nav">
+					<li><a href="{{=getUrl('about')}}"><i class="icon-white icon-info-sign"></i> About</a></li>
+					<li><a href="{{=getUrl('howtoplay')}}"><i class="icon-white icon-info-sign"></i> How to Play</a></li>
+					<li><a href="{{=getUrl('victory')}}"><i class="icon-white icon-info-sign"></i> Victory Conditions</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+
+	{{include}}

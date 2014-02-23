@@ -1,0 +1,210 @@
+{{extend 'layout.html'}}
+{{response.files.append(URL('static','css/jquery.dataTables.css'))}}
+
+<!-- In theory there is a script that generates the html we see in this file -->
+
+<div class="container" style="overflow:hidden"><!-- Container -->
+	<div class="row-fluid"><!-- Fluid Row -->
+
+
+		<div class="span12">
+			<div class="assassins-pad">
+				<div class="assassins-padback">
+					<div class="assassins-padtape"></div>
+					<div class="assassins-padheader">
+						<div class="assassins-padheadertext">
+							Join Game
+						</div>
+					</div>
+					<div class="assassins-padcontent">
+
+
+						 <table class="table table-hover assassins-table-no-border" id="tableize">
+								<thead>
+									<tr>
+										<th>Game</th>
+										<th>Name</th>
+										<th>Location</th>
+										<th></th>
+									</tr>
+								</thead>
+								<tbody>
+								{{for item in items:}}
+									<tr>
+										<td>{{=item['id']}}</td>
+										<td>{{=item['name']}}</td>
+										<td>{{=item['location']}}</td>
+										<td><a class="btn" href="{{=URL('game', 'detail', args=item['id'])}}">View <i class="icon-chevron-right"></i></a></td>
+									</tr> 
+								{{pass}}
+								</tbody>
+							</table>
+
+
+					</div><!-- End Pad Content -->
+				</div><!-- End Pad Back -->
+			</div><!-- End Pad -->
+		</div><!-- End Span 12 -->
+	</div><!-- End Row Fluid -->
+</div><!-- End Container-->
+
+<script src="{{=URL('static','js/jquery.dataTables.js')}}"></script>
+<script type="text/javascript" charset="utf-8">
+
+/* Formating function for row details */
+function fnFormatDetails ( oTable, nTr )
+{
+    var aData = oTable.fnGetData( nTr );
+    var sOut = '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">';
+    sOut += '<tr><td>Description: </td><td>'+'look a game description'+'</td></tr>';
+    sOut += '<tr><td>Game Creator: </td><td>'+'It was me!'+'</td></tr>';
+    sOut += '<tr><td>Extra info:</td><td>And any further details here (images etc)</td></tr>';
+    sOut += '</table>';
+     
+    return sOut;
+}
+
+/* API method to get paging information */
+$.fn.dataTableExt.oApi.fnPagingInfo = function ( oSettings )
+{
+    return {
+        "iStart":         oSettings._iDisplayStart,
+        "iEnd":           oSettings.fnDisplayEnd(),
+        "iLength":        oSettings._iDisplayLength,
+        "iTotal":         oSettings.fnRecordsTotal(),
+        "iFilteredTotal": oSettings.fnRecordsDisplay(),
+        "iPage":          Math.ceil( oSettings._iDisplayStart / oSettings._iDisplayLength ),
+        "iTotalPages":    Math.ceil( oSettings.fnRecordsDisplay() / oSettings._iDisplayLength )
+    };
+}
+ 
+/* Bootstrap style pagination control */
+$.extend( $.fn.dataTableExt.oPagination, {
+    "bootstrap": {
+        "fnInit": function( oSettings, nPaging, fnDraw ) {
+            var oLang = oSettings.oLanguage.oPaginate;
+            var fnClickHandler = function ( e ) {
+                e.preventDefault();
+                if ( oSettings.oApi._fnPageChange(oSettings, e.data.action) ) {
+                    fnDraw( oSettings );
+                }
+            };
+ 
+            $(nPaging).addClass('pagination').append(
+                '<ul>'+
+                    '<li class="prev disabled"><a href="#">&larr; '+oLang.sPrevious+'</a></li>'+
+                    '<li class="next disabled"><a href="#">'+oLang.sNext+' &rarr; </a></li>'+
+                '</ul>'
+            );
+            var els = $('a', nPaging);
+            $(els[0]).bind( 'click.DT', { action: "previous" }, fnClickHandler );
+            $(els[1]).bind( 'click.DT', { action: "next" }, fnClickHandler );
+        },
+ 
+        "fnUpdate": function ( oSettings, fnDraw ) {
+            var iListLength = 5;
+            var oPaging = oSettings.oInstance.fnPagingInfo();
+            var an = oSettings.aanFeatures.p;
+            var i, j, sClass, iStart, iEnd, iHalf=Math.floor(iListLength/2);
+ 
+            if ( oPaging.iTotalPages < iListLength) {
+                iStart = 1;
+                iEnd = oPaging.iTotalPages;
+            }
+            else if ( oPaging.iPage <= iHalf ) {
+                iStart = 1;
+                iEnd = iListLength;
+            } else if ( oPaging.iPage >= (oPaging.iTotalPages-iHalf) ) {
+                iStart = oPaging.iTotalPages - iListLength + 1;
+                iEnd = oPaging.iTotalPages;
+            } else {
+                iStart = oPaging.iPage - iHalf + 1;
+                iEnd = iStart + iListLength - 1;
+            }
+ 
+            for ( i=0, iLen=an.length ; i<iLen ; i++ ) {
+                // Remove the middle elements
+                $('li:gt(0)', an[i]).filter(':not(:last)').remove();
+ 
+                // Add the new list items and their event handlers
+                for ( j=iStart ; j<=iEnd ; j++ ) {
+                    sClass = (j==oPaging.iPage+1) ? 'class="active"' : '';
+                    $('<li '+sClass+'><a href="#">'+j+'</a></li>')
+                        .insertBefore( $('li:last', an[i])[0] )
+                        .bind('click', function (e) {
+                            e.preventDefault();
+                            oSettings._iDisplayStart = (parseInt($('a', this).text(),10)-1) * oPaging.iLength;
+                            fnDraw( oSettings );
+                        } );
+                }
+ 
+                // Add / remove disabled classes from the static elements
+                if ( oPaging.iPage === 0 ) {
+                    $('li:first', an[i]).addClass('disabled');
+                } else {
+                    $('li:first', an[i]).removeClass('disabled');
+                }
+ 
+                if ( oPaging.iPage === oPaging.iTotalPages-1 || oPaging.iTotalPages === 0 ) {
+                    $('li:last', an[i]).addClass('disabled');
+                } else {
+                    $('li:last', an[i]).removeClass('disabled');
+                }
+            }
+        }
+    }
+} );
+
+$(document).ready(function() {
+    /*
+     * Insert a 'details' column to the table
+     */
+    var nCloneTh = document.createElement( 'th' );
+    var nCloneTd = document.createElement( 'td' );
+    nCloneTd.innerHTML = '<img src="../static/images/Arrow1.jpg">';
+    nCloneTd.className = "center";
+     
+    $('#tableize thead tr').each( function () {
+        this.insertBefore( nCloneTh, this.childNodes[0] );
+    } );
+     
+    $('#tableize tbody tr').each( function () {
+        this.insertBefore(  nCloneTd.cloneNode( true ), this.childNodes[0] );
+    } );
+     
+    /*
+     * Initialse DataTables, with no sorting on the 'details' column
+     */
+    var oTable = $('#tableize').dataTable( {
+        "aoColumnDefs": [
+            { "bSortable": false, "aTargets": [ 0 ] },
+            { "bSortable": false, "aTargets": [ 4 ] },
+            { "bSortable": false, "aTargets": [ 3 ] },
+            { "bSortable": false, "aTargets": [ 2 ] },
+        ],
+        "aaSorting": [[1, 'desc']],
+		"sPaginationType": "bootstrap",
+		"bLengthChange": false,
+    });
+     
+    /* Add event listener for opening and closing details
+     * Note that the indicator for showing which row is open is not controlled by DataTables,
+     * rather it is done here
+     */
+    $('#tableize tbody td img').on('click', function () {
+        var nTr = $(this).parents('tr')[0];
+        if ( oTable.fnIsOpen(nTr) )
+        {
+            /* This row is already open - close it */
+						this.src = "../static/images/Arrow1.jpg";
+            oTable.fnClose( nTr );
+        }
+        else
+        {
+            /* Open this row */
+            this.src = "../static/images/Arrow2.jpg";
+            oTable.fnOpen( nTr, fnFormatDetails(oTable, nTr), 'details' );
+        }
+    } )	;
+} );
+</script>

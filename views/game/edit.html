@@ -1,0 +1,156 @@
+{{extend 'layout.html'}}
+
+<!-- ============================================================ -->
+
+	<div class="navbar navbar-inverse navbar-fixed-bottom container"><!-- Navigation Bar -->
+		<div class="navbar-inner">
+			<div class="container">
+				<ul class="nav">
+					<li>
+						<a href="{{=getUrl('detail', game_id)}}">
+							<i class="icon-white icon-ok"></i>
+							<span class="*hidden-phone"> Done</span>
+						</a>
+					</li>
+					<li>
+						<a onclick="deletegame({{=game_id}})">
+							<i class="icon-white icon-warning-sign"></i>
+							<span class="*hidden-phone"> Delete</span>
+						</a>
+					</li>
+				</ul>
+			</div><!-- End Conatiner -->
+		</div><!-- End Inner Navigation Bar -->
+	</div><!-- End Navigation Bar -->
+
+<!-- ============================================================ -->
+<div class="container" style="overflow:hidden"><!-- Container -->
+	<div class="row-fluid"><!-- Fluid Row -->
+
+		<div class="span4"><!-- Span4 -->
+			<div class="row-fluid"><!-- Fluid Row -->
+				<div class="assassins-polaroid">
+					<div class="assassins-polaroidback-nohover" href="#">
+						<div class="assassins-polaroidcontent">
+							<img class="assassins-polaroidpicture" src="{{=polaroid['image']}}" alt="">
+							<div class="assassins-polaroidtext">{{=polaroid['text1']}}</div>
+							<div class="assassins-polaroidtext2">{{=polaroid['text2']}}</div>
+							<div class="assassins-polaroidpin"></div>
+							<div class="assassins-vignette"></div>
+							{{if polaroid['status'] == 'DEAD':}}<div class="assassins-polaroiddead"></div>{{pass}}
+							{{if polaroid['status'] == 'HALF_DEAD':}}<div class="assassins-polaroidhalfalive"></div>{{pass}}
+						</div><!-- End Polaroid Content -->
+					</div><!-- End Polaroid Back -->
+				</div><!-- End Polaroid -->
+			</div><!-- End Fluid Row -->
+		</div><!-- End Span4 -->
+
+
+		<div class="span8">
+
+
+			<div class="row-fuid">
+				<div class="assassins-pad">
+					<div class="assassins-padback">
+						<div class="assassins-padtape"></div>
+						<div class="assassins-padheader">
+							<div class="assassins-padheadertext">
+								Edit Game
+							</div><!-- End Pad Header Text -->
+						</div><!-- End Pad Header -->
+						<div class="assassins-padcontent">
+							<div class="row-fluid"><!-- Fluid Row -->
+								<div class="span12">
+									<div id="web2py_user_form">
+										{{=updateForm}}
+									</div><!-- End web2py Form -->
+								</div><!-- End Span 12 -->
+							</div><!-- End Row Fluid -->
+						</div><!-- End Pad Content -->
+					</div><!-- End Pad Back -->
+				</div><!-- End Pad -->
+			</div><!-- End Row Fluid -->
+
+			<br>
+
+			<div class="row-fuid">
+				<div class="assassins-pad">
+					<div class="assassins-padback">
+						<div class="assassins-padtape"></div>
+						<div class="assassins-padheader">
+							<div class="assassins-padheadertext">
+								Edit Players
+							</div><!-- End Pad Header Text -->
+						</div><!-- End Pad Header -->
+						<div class="assassins-padcontent">
+							<div class="row-fluid">
+								<div class="span6">
+									<h4>Players</h4>
+									<p>{{=gameStats['players']}}</p>
+								</div><!-- End Span 6 -->
+								<div class="span6">
+									<h4>Players Remaining</h4>
+									<p>{{=gameStats['alive']}}</p>
+								</div><!-- End Span 6 -->
+							</div><!-- End Fluid Row -->
+							<h4>Player List</h4>
+								{{for player in players:}}
+								<p>
+									<span{{if player['status'] == 'DEAD':}} style="text-decoration: line-through"{{pass}}>{{=player['name']}}</span>
+									<button class="btn btn-mini" onclick="killplayer({{=player['player_id']}})">Kill</button>
+									{{if not player['host']:}}
+									<button class="btn btn-mini" onclick="kickplayer({{=player['player_id']}})">Kick</button>
+									{{pass}}
+								</p>
+								{{pass}}
+						</div><!-- End Pad Content -->
+					</div><!-- End Pad Back -->
+				</div><!-- End Pad -->
+			</div><!-- End Row Fluid -->
+
+
+		</div><!-- End Span 8 -->
+	</div><!-- End Row Fluid -->
+</div><!-- End Container-->
+<!-- ============================================================ -->
+<script type="text/javascript" charset="utf-8">
+
+	function killplayer(player_id) {
+		$.ajax({
+			type:'POST',
+			url:"{{=getUrl('killplayerpost')}}",
+			data:"player_id="+player_id,
+			async:false,
+			success:reload()
+		});
+	}
+
+	function kickplayer(player_id) {
+		$.ajax({
+			type:"POST",
+			url:"{{=getUrl('kickplayerpost')}}",
+			data:"player_id="+player_id,
+			async:false,
+			success:reload()
+		});
+	}
+
+	function deletegame(game_id) {
+		choice = confirm("Are you sure you want to delete this game?");
+		if (choice) {
+			$.ajax({
+				type:"POST",
+				url:"{{=getUrl('deletegamepost')}}",
+				data:"game_id="+{{=game_id}},
+				async:false,
+				success:reload()
+			});
+		}
+	}
+
+	function reload() {
+		location.reload();
+	}
+
+</script>
+<!-- ============================================================ -->

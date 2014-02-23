@@ -1,0 +1,55 @@
+{{extend 'layout.html'}}
+
+<!-- ============================================================ -->
+<div class="container" style="overflow:hidden"><!-- Container -->
+	<div class="row-fluid"><!-- Fluid Row -->
+
+
+		{{if len(games) == 0:}}
+		<div class="assassins-pad">
+			<div class="assassins-padback">
+				<div class="assassins-padtape"></div>
+				<div class="assassins-padheader">
+					<div class="assassins-padheadertext">
+						No Games :(
+					</div>
+				</div>
+				<div class="assassins-padcontent">
+					You aren't participating in any games.
+				</div><!-- End Pad Content -->
+			</div><!-- End Pad Back -->
+		</div><!-- End Pad -->
+		{{pass}}
+
+
+		{{i = 0}}
+		{{for game in games:}}
+		<div class="span4"><!-- Polaroid Picture -->
+			<div class="assassins-polaroid">
+				<a class="assassins-polaroidback" href="{{=getUrl('detail', game['game_id'])}}">
+					<div class="assassins-polaroidcontent">
+						<img class="assassins-polaroidpicture" style="z-index:1" src="{{=game['image']}}" alt="">
+						<div class="assassins-polaroidtext">
+						{{=game['text1']}}
+						</div>
+						<div class="assassins-polaroidtext2">
+						{{=game['text2']}}
+						</div>
+						<div class="assassins-polaroidpin"></div>
+						<div class="assassins-vignette"></div>
+						{{if game['accessory'] == 'DEAD':}}<div class="assassins-polaroiddead"></div>{{pass}}
+						{{if game['accessory'] == 'TARGET':}}<div class="apolaroid-target"></div>{{pass}}
+						{{if game['accessory'] == 'FINISHED':}}<div class="assassins-polaroidGameOver"></div>{{pass}}
+					</div>
+				</a>
+			</div>
+		</div><!-- End Polaroid Picture -->
+	{{i = i+1}}
+	{{if i == 3:}}
+	</div><!-- End Fluid Row -->
+	<div class="row-fluid"><!-- Fluid Row -->
+	{{i = 0}}
+	{{pass}}{{pass}}
+	</div><!-- End Row Fluid -->
+</div><!-- End Container-->
+<!-- ============================================================ -->

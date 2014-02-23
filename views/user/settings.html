@@ -1,0 +1,45 @@
+{{extend 'layout.html'}}
+
+<div class="container" style="overflow:hidden"><!-- Container -->
+	<div class="row-fluid"><!-- Fluid Row -->
+
+
+		<div class="span8">
+			<div class="assassins-pad">
+				<div class="assassins-padback">
+					<div class="assassins-padtape"></div>
+					<div class="assassins-padheader">
+						<div class="assassins-padheadertext">
+							Settings
+						</div><!-- End Pad Header Text -->
+					</div><!-- End Pad Header -->
+					<div class="assassins-padcontent">
+						<div id="web2py_user_form">
+							{{=form}}
+						</div><!-- End web2py Form -->
+					</div><!-- End Pad Form -->
+				</div><!-- End Pad Back -->
+			</div><!-- End Pad -->
+		</div><!-- End Span 6 -->
+
+
+		<div class="span4 hidden-phone">
+			<div class="assassins-polaroid">
+				<div class="assassins-polaroidback-nohover" href="#">
+					<div class="assassins-polaroidcontent">
+						<img class="assassins-polaroidpicture" src="{{=image}}" alt="">
+						<div class="assassins-polaroidtext">
+							{{=auth.user.first_name}} {{=auth.user.last_name}}
+						</div>
+						<div class="assassins-polaroidtext2">
+						</div>
+						<div class="assassins-polaroidpin"></div>
+						<div class="assassins-vignette"></div>
+					</div><!-- End Polaroid Content -->
+				</div><!-- End Polaroid Back -->
+			</div><!-- End Assassins Polaroid -->
+		</div><!-- End Span 6 -->
+
+
+	</div><!-- End Row Fluid -->
+</div><!-- End Container-->

@@ -1,0 +1,217 @@
+{{extend 'layout.html'}}
+{{from gluon.contrib.markdown import markdown2}}
+<!-- ============================================================ -->
+
+{{if btn['all']:}}
+	<div class="navbar navbar-inverse navbar-fixed-bottom container"><!-- Navigation Bar -->
+		<div class="navbar-inner">
+			<div class="container">
+				<ul class="nav">
+{{if userInfo['host'] == True :}}
+					<li>
+						<a href="{{=getUrl('edit', game.id)}}">
+							<i class="icon-white icon-wrench"></i>
+							<span class="*hidden-phone"> Edit</span>
+						</a>
+					</li>
+{{pass}}
+{{if btn['start']:}}
+					<li>
+						<a onclick="startGame()">
+							<i class="icon-white icon-play"></i>
+							<span class="*hidden-phone"> Start</span>
+						</a>
+					</li>
+{{pass}}
+{{if btn['cantstart']:}}
+					<li>
+						<a onclick="cantStart()">
+							<i class="icon-white icon-play"></i>
+							<span class="*hidden-phone"> Start</span>
+						</a>
+					</li>
+{{pass}}
+{{if btn['join'] :}}
+					<li>
+						<a onclick="joinGame()">
+							<i class="icon-white icon-plus"></i>
+							<span class="*hidden-phone"> Join</span>
+						</a>
+					</li>
+{{pass}}
+{{if btn['leave'] :}}
+					<li>
+						<a onclick="leaveGame()">
+							<i class="icon-white icon-remove"></i>
+							<span class="*hidden-phone"> Leave</span>
+						</a>
+					</li>
+{{pass}}
+{{if btn['dead'] :}}
+					<li>
+						<a onclick="suicide()">
+							<i class="icon-white icon-warning-sign"></i>
+							<span class="*hidden-phone"> Suicide</span>
+						</a>
+					</li>
+{{pass}}
+				</ul>
+			</div><!-- End Conatiner -->
+		</div><!-- End Inner Navigation Bar -->
+	</div><!-- End Navigation Bar -->
+{{pass}}
+
+<!-- ============================================================ -->
+
+<div class="container" style="overflow:hidden"><!-- Container -->
+	<div class="row-fluid"><!-- Fluid Row -->
+
+		<div class="span4"><!-- Span4 -->
+			<div class="assassins-polaroid">
+				<div class="assassins-polaroidback-nohover" href="#">
+					<div class="assassins-polaroidcontent">
+						<img class="assassins-polaroidpicture" src="{{=polaroid['image']}}" alt="">
+						<div class="assassins-polaroidtext">{{=polaroid['text1']}}</div>
+						<div class="assassins-polaroidtext2">{{=polaroid['text2']}}</div>
+						<div class="assassins-polaroidpin"></div>
+						<div class="assassins-vignette"></div>
+						{{if polaroid['accessory'] == 'DEAD':}}<div class="assassins-polaroiddead"></div>{{pass}}
+						{{if polaroid['accessory'] == 'TARGET':}}<div class="apolaroid-target"></div>{{pass}}
+					</div><!-- End Polaroid Content -->
+				</div><!-- End Polaroid Back -->
+			</div><!-- End Polaroid -->
+		</div><!-- End Span4 -->
+
+
+		<div class="span8">
+
+
+			<div class="assassins-pad">
+				<div class="assassins-padback">
+					<div class="assassins-padtape"></div>
+					<div class="assassins-padheader">
+						<div class="assassins-padheadertext">
+							{{=game.name}}
+						</div><!-- End Pad Header Text -->
+					</div><!-- End Pad Header -->
+					<div class="assassins-padcontent">
+						<div class="row-fluid"><!-- Fluid Row -->
+							<div class="row-fluid">
+								<div class="span4">
+									<h4>Location</h4>
+									<p>{{=game.location}}</p>
+								</div><!-- End Span 6 -->
+								<div class="span4">
+									<h4>Expected Start Date</h4>
+									<p>{{=game.expected_start_date}}</p>
+								</div><!-- End Span 6 -->
+								<div class="span4">
+									<h4>Host</h4>
+									<p>{{=db.auth_user(game.host_id).first_name}} {{=db.auth_user(game.host_id).last_name}}</p>
+								</div><!-- End Span 6 -->
+							</div>
+							<p>{{=XML(markdown2.markdown(game.description))}}</p>
+						</div><!-- End Row Fluid -->
+					</div><!-- End Pad Content -->
+				</div><!-- End Pad Back -->
+			</div><!-- End Pad -->
+
+			<br>
+
+			<div class="row-fuid">
+				<div class="assassins-pad">
+					<div class="assassins-padback">
+					<div class="assassins-padtape"></div>
+						<div class="assassins-padheader">
+							<div class="assassins-padheadertext">
+								Players
+							</div><!-- End Pad Header Text -->
+						</div><!-- End Pad Header -->
+						<div class="assassins-padcontent">
+							<div class="row-fluid">
+								<div class="span6">
+									<h4>Players</h4>
+									<p>{{=gameStats['players']}}</p>
+								</div><!-- End Span 6 -->
+								<div class="span6">
+									<h4>Players Remaining</h4>
+									<p>{{=gameStats['alive']}}</p>
+								</div><!-- End Span 6 -->
+							</div><!-- End Fluid Row -->
+							<div class="row-fluid">
+								<h4>Player List</h4>
+								{{for player in players:}}
+									<p {{if player['status'] == 'DEAD':}}style="text-decoration: line-through"{{pass}}>{{=player['name']}}</p>
+								{{pass}}
+							</div><!-- End Fluid Row -->
+						</div><!-- End Pad Content -->
+					</div><!-- End Pad Back -->
+				</div><!-- End Pad -->
+			</div><!-- End Row Fluid -->
+
+
+		</div><!-- End Span 8 -->
+	</div><!-- End Row Fluid -->
+</div><!-- End Container-->
+<!-- ============================================================ -->
+<script type="text/javascript" charset="utf-8">
+
+	function startGame() {
+		choice = confirm("Are you sure you want to start this game?");
+		if (choice) {
+			$.ajax({
+				type:"POST",
+				url:"{{=getUrl('startgamepost')}}",
+				data:"game_id="+{{=game.id}},
+				async:false,
+				success:reload()
+			});
+		}
+	}
+
+	function cantStart() {
+		alert("You need at least two players to start a game");
+	}
+
+	function joinGame() {
+		$.ajax({
+			type:"POST",
+			url:"{{=getUrl('joingamepost')}}",
+			data:"game_id="+{{=game.id}},
+			async:false,
+			success:reload()
+		});
+	}
+
+	function leaveGame() {
+		choice = confirm("Are you sure you want to leave this game?");
+		if (choice) {
+			$.ajax({
+				type:"POST",
+				url:"{{=getUrl('leavegamepost')}}",
+				data:"player_id="+{{=userInfo['player_id']}},
+				async:false,
+				success:reload()
+			});
+		}
+	}
+
+	function suicide() {
+		choice = confirm("Are you sure you want to kill yourself?");
+		if (choice) {
+			$.ajax({
+				type:"POST",
+				url:"{{=getUrl('suicidepost')}}",
+				data:"player_id="+{{=userInfo['player_id']}},
+				async:false,
+				success:reload()
+			});
+		}
+	}
+
+	function reload() {
+		location.reload(true);
+	}
+
+</script>
+<!-- ============================================================ -->

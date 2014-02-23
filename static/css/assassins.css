@@ -1,0 +1,261 @@
+body{
+		*padding-left:0px;
+		*padding-right:0px;
+		background: url(../images/corkboard.bmp) fixed;
+		margin-top:51px;
+		margin-bottom: 51px;
+}
+
+/* css for the polaroid pictures shown in the current games screen */
+.assassins-currentgameslist{
+	position:relative;
+	width:200px;
+	top:30px;
+	margin:auto;
+	background-color:#FCF0AD;
+	overflow:hidden;
+	white-space: nowrap;
+	box-shadow: 2px 2px 10px #000000;
+}
+
+.assassins-polaroid{
+	height:300px;
+	width:275;
+	padding-top:30px;
+	/*
+	transform:rotate(5deg);
+	-ms-transform:rotate(5deg);
+	-moz-transform:rotate(5deg);
+	-webkit-transform:rotate(5deg);
+	-o-transform:rotate(5deg);
+	*/
+}
+
+.assassins-polaroidback{
+	position:relative;
+	display:block;
+	height:260px;
+	width:215px;
+	margin:auto;
+	padding-top:15px;
+	padding-left:15px;
+	color:black;
+	text-align:center;
+	background: url(../images/polaroidback.bmp);
+	overflow:visible;
+	box-shadow: 2px 2px 10px #000000;
+}
+
+.assassins-polaroidback-nohover{
+	position:relative;
+	display:block;
+	height:260px;
+	width:215px;
+	margin:auto;
+	padding-top:15px;
+	padding-left:15px;
+	color:black;
+	text-align:center;
+	background: url(../images/polaroidback.bmp);
+	overflow:visible;
+	box-shadow: 2px 2px 10px #000000;
+}
+
+.assassins-polaroidback:hover{
+	height:250px;
+	width:205px;
+	padding-top:5px;
+	padding-left:5px;
+	color:black;
+	background: url(../images/polaroidback.bmp);
+	text-decoration:none;
+	border:10px solid #990000;
+}
+
+.assassins-polaroidcontent{
+	position:relative;
+	height:260px;
+	width:200px;
+	white-space: nowrap;
+}
+
+.assassins-polaroidpicture{
+	height:200px;
+	width:200px;
+}
+
+.assassins-polaroidtext{
+	position:absolute;
+	height:24px;
+	width:200px;
+	top:195px;
+	z-index:900;
+  margin: 10px 0;
+  font-weight: bold;
+	font-size:18px;
+  line-height: 20px;
+	overflow:hidden;
+	text-overflow:ellipsis;
+}
+
+.assassins-polaroidtext2{
+	position:absolute;
+	width:200px;
+	top:230px;
+	color:#777777;
+	overflow:hidden;
+	text-overflow:ellipsis;
+}
+
+.assassins-polaroidpin{
+	position:absolute;
+	height:41px;
+	width:33px;
+	top:-27px;
+	left:50%;
+	margin-left:-16px;
+	background: url(../images/pin.png);
+	z-index:100;
+}
+
+.assassins-polaroidtape{
+	position:absolute;
+	height:45px;
+	width:87px;
+	top:-40px;
+	left:55px;
+	background: url(../images/tape.png);
+	z-index:100;
+}
+
+.assassins-polaroiddead{
+	position:absolute;
+	height:200px;
+	width:200px;
+	top:0px;
+	left:0px;
+	background: url(../images/polaroiddead.png);
+	z-index:99
+}
+
+.assassins-polaroidGameOver{
+	position:absolute;
+	height:200px;
+	width:200px;
+	top:0px;
+	left:0px;
+	background: url(../images/polaroidGameOver.png);
+	z-index:99
+}
+
+.apolaroid-target{
+	position:absolute;
+	height:200px;
+	width:200px;
+	top:0px;
+	left:0px;
+	background: url(../images/polaroid-target.png);
+	z-index:99
+}
+
+.assassins-vignette{
+	position:absolute;
+	height:200px;
+	width:200px;
+	top:0px;
+	left:0px;
+	background: url(../images/vignette.png);
+	z-index:98;
+
+}
+
+/* css for preferences */
+.assassins-pad{
+	position:relative;
+	padding-top:30px;
+	padding-bottom:12px;
+	padding-left:12px;
+	padding-right:12px;
+
+}
+
+.assassins-padback{
+  font-size: 18px;
+  font-weight: 200;
+  line-height: 30px;
+  color: inherit;
+	position:relative;
+	background: url(../images/pad.bmp);
+	box-shadow: 2px 2px 10px #000000;
+}
+
+.assassins-padheader{
+	height:80px;
+	width:90%;
+	padding-left:10%;
+	background-color:#FFFF99;
+}
+
+.assassins-padheadertext{
+	position:absolute;
+	top:40px;
+	left:30px;
+	font-family: inherit;
+	font-weight: bold;
+	line-height: 1;
+	color: inherit;
+	font-size: 30px;
+	text-rendering: optimizelegibility;
+}
+
+.assassins-padcontent{
+	padding-top:15px;
+	padding-bottom:15px;
+	padding-left:30px;
+	padding-right:30px;
+}
+
+.assassins-padtape{
+	position:absolute;
+	height:44px;
+	width:213px;
+	top:-25px;
+	left:50%;
+	margin-left:-106px;
+	background: url(../images/tape.png);
+	z-index:100;
+}
+
+/* Forms & Buttons */
+.assassins-table-no-border thead tr th{
+	border-width:0px;
+}
+
+.assassins-table-no-border tbody tr td{
+	border-width:0px;
+}
+
+.assassins-table-no-border tbody tr td a{
+	width:28px;
+}
+
+.assassins-form table{
+	width: 100%;
+}
+
+.w2p_fw input[type=text], input[type=password], textarea, select{
+	width:100%;
+}
+
+.w2p_fw textarea{
+	resize:vertical;
+}
+
+/* Icons */
+.icon-assassins{
+	background-image:url("../images/aicons-white.png");
+}
+
+.icon-polaroid{
+	background-position:0 0
+}

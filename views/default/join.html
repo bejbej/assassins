@@ -1,0 +1,49 @@
+{{extend 'layout.html'}}
+{{response.files.append(URL('static','css/jquery.dataTables.css'))}}
+
+<!-- In theory there is a script that generates the html we see in this file -->
+
+<div class="container" style="overflow:hidden"><!-- Container -->
+	<div class="row-fluid"><!-- Fluid Row -->
+
+
+		<div class="span12">
+			<div class="assassins-pad">
+				<div class="assassins-padback">
+					<div class="assassins-padtape"></div>
+					<div class="assassins-padheader">
+						<div class="assassins-padheadertext">
+							Join Game
+						</div>
+					</div>
+					<div class="assassins-padcontent">
+
+
+						 <table class="table table-hover assassins-table-no-border" id="tableize">
+								<thead>
+									<tr>
+										<th>Game</th>
+										<th>Name</th>
+										<th>Location</th>
+										<th></th>
+									</tr>
+								</thead>
+								<tbody>
+								{{for item in items:}}
+									<tr>
+										<td>{{=item['id']}}</td>
+										<td>{{=item['name']}}</td>
+										<td>{{=item['location']}}</td>
+										<td><a class="btn" href="{{=URL('game', 'detail', args=item['id'])}}">View</a></td>
+									</tr> 
+								{{pass}}
+								</tbody>
+							</table>
+
+
+					</div><!-- End Pad Content -->
+				</div><!-- End Pad Back -->
+			</div><!-- End Pad -->
+		</div><!-- End Span 12 -->
+	</div><!-- End Row Fluid -->
+</div><!-- End Container-->
