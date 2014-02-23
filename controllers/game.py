@@ -212,7 +212,7 @@ def getEditgameUpdateForm (game):
 	db = current.db
 
 	#Hide some fields of the form
-	hideFields (db.game, ['id', 'rules', 'host_id', 'game_status', 'password', 'winner_id'])
+	hideFields (db.game, ['id', 'host_id', 'game_status', 'password'])
 
 	formUpdate = SQLFORM(db.game, game.id)
 	formUpdate.add_class('assassins-form')

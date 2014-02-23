@@ -13,7 +13,7 @@ def logout():
 	return dict()
 
 def register():
-	hideFields (db.auth_user, ['image', 'theme'])
+	hideFields (db.auth_user, ['image'])
 	return dict(form=auth.register())
 
 def password_reset():

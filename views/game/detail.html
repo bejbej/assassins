@@ -97,15 +97,7 @@
 					<div class="assassins-padcontent">
 						<div class="row-fluid"><!-- Fluid Row -->
 							<div class="row-fluid">
-								<div class="span4">
-									<h4>Location</h4>
-									<p>{{=game.location}}</p>
-								</div><!-- End Span 6 -->
-								<div class="span4">
-									<h4>Expected Start Date</h4>
-									<p>{{=game.expected_start_date}}</p>
-								</div><!-- End Span 6 -->
-								<div class="span4">
+								<div class="span12">
 									<h4>Host</h4>
 									<p>{{=db.auth_user(game.host_id).first_name}} {{=db.auth_user(game.host_id).last_name}}</p>
 								</div><!-- End Span 6 -->

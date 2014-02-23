@@ -9,6 +9,7 @@
 ## - call exposes all registered services (none by default)
 #########################################################################
 from atools import *
+from aactions import *
 from controller import *
 
 ########## Get Requests ##########
@@ -71,7 +72,7 @@ def create():
 	from gluon.tools import Crud
 
 	#Hide the fields that should not be accessable by the user
-	hideFields (db.game, ['host_id', 'game_status', 'password', 'winner_id', 'rules'])
+	hideFields (db.game, ['host_id', 'game_status', 'password'])
 
 	#Run the form
 	#form = SQLFORM(db.game)

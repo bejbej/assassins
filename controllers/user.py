@@ -7,7 +7,7 @@ def settings():
 	#Set the text and picture for the polaroid
 	image = getImage(auth.user.image)
 
-	hideFields (db.auth_user, ['id', 'theme'])
+	hideFields (db.auth_user, ['id'])
 
 	form=SQLFORM(db.auth_user, auth.user.id)
 	form.add_class('assassins-form')
